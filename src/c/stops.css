@@ -1,6 +1,10 @@
+body {
+  padding-top:50px;
+}
 .navbar-inner {-webkit-border-radius: 0px;-moz-border-radius: 0px;border-radius: 0px;}
 .navbar-inner .container {text-align:center;}
 .navbar .brand {float:none;display:inline-table;}
+.nav-tabs.nav-stacked {margin-bottom:10px;}
 h5,h4 {margin :3px 0}
 p {margin: 0 0 0px;}
 

@@ -55,7 +55,6 @@ $(function() {
       Controller.showLoadingText();
       window.routeTag = $(e.srcElement).attr('data-routetag');
       window.routeTitle = $(e.srcElement).attr('data-title');
-      console.log($(e.srcElement).attr('data-title'));
       var routeDetail = new RouteDetail({tag:$(e.srcElement).attr('data-routetag')});
       routeDetail.on('change', function() {
         var directionsView = new DirectionsListView({collection:new Directions(routeDetail.get('direction')),stops:new Stops(routeDetail.get('stop'))});
@@ -74,7 +73,6 @@ $(function() {
     },
     render: function() {
       var view = this;
-      console.log(window.routeTitle);
       Controller.showTitle(window.routeTitle);
       this.collection.each(function(d) {
         view.$el.append(view.template(d.toJSON()));
@@ -119,7 +117,8 @@ $(function() {
 
       var predictions = new Prediction({routeTag:window.routeTag,stop:$(e.srcElement).attr('data-tag')});
       predictions.on('change', function() {
-        var predictionsView = new PredictionView({collection:predictions});
+        var stopPredictions = new Predictions(predictions);
+        var predictionsView = new PredictionView({collection:stopPredictions,model:predictions});
         Controller.showView(predictionsView);
       });
 
@@ -134,15 +133,29 @@ $(function() {
     tagName: 'ul',
     className: 'nav nav-tabs nav-stacked',
     template: _.template($('#routePredictionListTemplate').html()),
+    events: {
+      'click button':'reloadPredictions'
+    },
     render: function() {
       var view = this;
       Controller.showTitle(window.directionTitle + ' - ' + window.StopTitle);
-      _.each(this.collection.attributes,function(p) {
-        if(p.minutes) {
-        view.$el.append(view.template(p));
-        }
+
+      _.each(this.collection.models[0].attributes,function(p) {
+        if(p.minutes) view.$el.append(view.template(p));
       });
+
+      var reloadButton = this.make('button',{'class':'btn btn-block','style':'margin-top:10px;'}, 'Reload');
+      view.$el.append(reloadButton);
+
       return this;
+    },
+    reloadPredictions: function(e) {
+      e.preventDefault();
+      $(e.srcElement).text('Reloading predicions...');
+      this.model.on('change', function() {
+        $(e.srcElement).text('Reload');
+      });
+      this.model.fetch();
     }
   });
 
@@ -178,8 +191,7 @@ $(function() {
             listView = new RoutesListView({collection:loadCollectionStreetCar});
           break;
           case 'b':
-            console.log('here');
-          listView = new RoutesListView({collection:loadCollectionBus});
+            listView = new RoutesListView({collection:loadCollectionBus});
           break
         }
       });
