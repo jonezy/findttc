@@ -1,6 +1,13 @@
 Find Transit in Toronto
 =======================
+Decided to whip together something to get transit times.
 
-Decided to whip together something to get transit times. 
+Data comes from: webservices.nextbus.com
 
-It's backbone.js
+It's built in backbone.js
+
+To Do
+=====
+ - Transit around me (myttc.ca/near)
+ - Update to use url's  (#/501/West/1st_and_lakeshore)
+
