@@ -6,6 +6,7 @@ body {
 .navbar .brand {float:none;display:inline-table;}
 .nav-tabs.nav-stacked {margin-bottom:10px;}
 .alert {margin-bottom:10px;}
+ul li a div.label {width:20px;float:left;text-align:center;margin-right:5px;}
 h5,h4 {margin :3px 0}
 p {margin: 0 0 0px;}
 

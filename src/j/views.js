@@ -59,6 +59,7 @@ var app = app || {};
       var tag = $(e.srcElement).attr('data-tag');
       var direction = this.collection.where({tag:tag})[0];
       var directionStops = new app.Stops(direction.get('stop'));
+      console.log(directionStops);
       var stopsView = new app.StopsView({collection:directionStops, stops:this.options.stops});
       Controller.showView(stopsView);
     }
@@ -84,14 +85,30 @@ var app = app || {};
       Controller.showLoadingText();
       window.StopTitle = $(e.srcElement).attr('data-stoptitle');
 
-      var predictions = new app.Prediction({routeTag:window.routeTag,stop:$(e.srcElement).attr('data-tag')});
+      var predictions = new app.Prediction({route:window.routeTag, routeTag:$(e.srcElement).attr('data-tag'),stop:$(e.srcElement).attr('data-stopid')});
       predictions.on('change', function() {
-        console.log(predictions);
-        var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions});
-        Controller.showView(predictionsView);
+
+          var routePredictions = new app.Predictions(predictions)
+          console.log(routePredictions);
+          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions});
+          Controller.showView(predictionsView);
       });
 
-      predictions.fetch();
+      predictions.fetch({
+        success: function(model, response) {
+          var routePredictions = new app.Predictions(predictions)
+          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions});
+          Controller.showView(predictionsView);
+        },
+        error: function(model, response) {
+          console.log(model, response);
+        } 
+      });
+      //window.check = window.setInterval(function() {
+          //app.Helpers.makeAlert({className:'alert-info', message: 'There are no predictions for this stop'});
+          //$('#routes').empty();
+          //window.clearInterval('check');
+      //}, 10000);
     }
   });
 
@@ -112,9 +129,21 @@ var app = app || {};
     render: function() {
       var view = this;
       Controller.showTitle(window.directionTitle + ' - ' + window.StopTitle);
-
       _.each(this.collection.models[0].attributes,function(p) {
-        if(p.minutes) view.$el.append(view.template(p));
+        if(p.minutes) {
+          var minutesUntil = parseInt(p.minutes);
+          if(minutesUntil > 10) {
+            p.label = 'label-success';
+          } else if (minutesUntil <= 10 && minutesUntil > 5) {
+            p.label = 'label-warning';
+          } else if (minutesUntil <= 5) {
+            p.label = 'label-important';
+          } else {
+            p.label = 'label-default';
+          }
+
+          view.$el.append(view.template({data:p}));
+        }
       });
 
       var reloadButton = this.make('button',{'id':'reload-button','class':'btn btn-block','style':'margin-top:10px;'}, 'Reload');
@@ -140,10 +169,10 @@ var app = app || {};
     render:function() {
       var view = this;
 
-      var position = app.Helpers.locate(function(position) {
-        if(position) {
-          view.handleLocated(position);
-        } else {
+      //var position = app.Helpers.locate(function(position) {
+        //if(position) {
+          //view.handleLocated(position);
+        //} else {
           var routeList = new app.Routes;
           routeList.fetch();
           routeList.on('reset', function() {
@@ -151,8 +180,8 @@ var app = app || {};
                alert('The route list is empty');
             view.collection = routeList;
           });
-        }
-      });
+        //}
+      //});
 
       return this;
     },

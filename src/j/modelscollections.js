@@ -43,13 +43,28 @@ var app = app || {};
 
   app.Prediction = Backbone.Model.extend({
     url: function() {
-      return 'http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r='+ this.get('routeTag')+'&s='+this.get('stop')+'';
+      return 'http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r='+ this.get('route')+'&s='+this.get('routeTag')+'';
     },
     parse: function(response) {
-      if(response.predictions.direction)
-        return response.predictions.direction.prediction;
-
+      if(response.predictions.direction.length > 1) {
+          response.predictions.direction.prediction = [];
+        _.each(response.predictions.direction, function(d) {
+          _.each(d.prediction, function(p) {
+            p.title = d.title;
+            response.predictions.direction.prediction.push(p);
+          });
+        });
+      }  
+      if(response.predictions.direction) {
+        return _.sortBy(response.predictions.direction.prediction, function(num) {
+         return parseInt(num.minutes);
+        });
+      }
+      this.sort();
       return "";
+    },
+    comparator: function(prediction) {
+console.log(prediction);
     }
   });
   app.Predictions = Backbone.Collection.extend({model:app.Prediction});

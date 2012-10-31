@@ -10,4 +10,5 @@ To Do
 =====
  - Transit around me (myttc.ca/near)
  - Update to use url's  (#/501/West/1st_and_lakeshore)
+ - Handle short turn street cars (multiple directions returned)
 
