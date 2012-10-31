@@ -46,26 +46,25 @@ var app = app || {};
       return 'http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r='+ this.get('route')+'&s='+this.get('routeTag')+'';
     },
     parse: function(response) {
-      if(response.predictions.direction.length > 1) {
-          response.predictions.direction.prediction = [];
-        _.each(response.predictions.direction, function(d) {
-          _.each(d.prediction, function(p) {
-            p.title = d.title;
-            response.predictions.direction.prediction.push(p);
-          });
-        });
-      }  
       if(response.predictions.direction) {
-        return _.sortBy(response.predictions.direction.prediction, function(num) {
-         return parseInt(num.minutes);
-        });
+        if(response.predictions.direction && response.predictions.direction.length > 1) {
+          response.predictions.direction.prediction = [];
+          _.each(response.predictions.direction, function(d) {
+            _.each(d.prediction, function(p) {
+              p.title = d.title;
+              response.predictions.direction.prediction.push(p);
+            });
+          });
+        }  
+        if(response.predictions.direction) {
+          return _.sortBy(response.predictions.direction.prediction, function(num) {
+            return parseInt(num.minutes);
+          });
+        }
+        this.sort();
       }
-      this.sort();
       return "";
     },
-    comparator: function(prediction) {
-console.log(prediction);
-    }
   });
   app.Predictions = Backbone.Collection.extend({model:app.Prediction});
 })();

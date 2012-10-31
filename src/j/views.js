@@ -59,7 +59,6 @@ var app = app || {};
       var tag = $(e.srcElement).attr('data-tag');
       var direction = this.collection.where({tag:tag})[0];
       var directionStops = new app.Stops(direction.get('stop'));
-      console.log(directionStops);
       var stopsView = new app.StopsView({collection:directionStops, stops:this.options.stops});
       Controller.showView(stopsView);
     }
@@ -89,7 +88,6 @@ var app = app || {};
       predictions.on('change', function() {
 
           var routePredictions = new app.Predictions(predictions)
-          console.log(routePredictions);
           var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions});
           Controller.showView(predictionsView);
       });
@@ -101,7 +99,6 @@ var app = app || {};
           Controller.showView(predictionsView);
         },
         error: function(model, response) {
-          console.log(model, response);
         } 
       });
       //window.check = window.setInterval(function() {
