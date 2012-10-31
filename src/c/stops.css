@@ -5,6 +5,8 @@ body {
 .navbar-inner .container {text-align:center;}
 .navbar .brand {float:none;display:inline-table;}
 .nav-tabs.nav-stacked {margin-bottom:10px;}
+.alert {margin-bottom:10px;}
+ul li a div.label {width:20px;float:left;text-align:center;margin-right:5px;}
 h5,h4 {margin :3px 0}
 p {margin: 0 0 0px;}
 
@@ -17,5 +19,9 @@ p {margin: 0 0 0px;}
   .container-fluid {
     padding-right: 20px;
     padding-left: 20px;
+  }
+  .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+    margin-right: 0px;
+    margin-left: 0px;
   }
 }
