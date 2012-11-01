@@ -4,12 +4,12 @@ var app = app || {};
 
   app.Manager = Backbone.Router.extend({
     routes: {
-      "":"loadApp",
+      "*path":"loadApp",
       ":routetag/:stoptag":"loadPredictions"
     },
 
     loadApp: function() {
-      console.log('handled in route');
+      console.log('here');
       var appView = new app.AppView;
       appView.render();
     },
