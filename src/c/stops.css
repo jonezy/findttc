@@ -6,8 +6,9 @@ body {
 .navbar .brand {float:none;display:inline-table;}
 .nav-tabs.nav-stacked {margin-bottom:10px;}
 .alert {margin-bottom:10px;}
-div.label {width:20px;float:left;text-align:center;margin:2px 5px;}
-td {font-size:80%;}
+div.label {width:20px;float:left;text-align:center;margin:1px 5px;}
+td {color:#999;}
+.table th, .table td {border-top:solid 1px #fff;}
 .nav-tabs.nav-stacked > li > a {font-size:90%;}
 h5,h4 {margin :3px 0}
 p {margin: 0 0 0px;}

@@ -59,7 +59,7 @@ var app = app || {};
       var tag = $(e.srcElement).attr('data-tag');
       var direction = this.collection.where({tag:tag})[0];
       var directionStops = new app.Stops(direction.get('stop'));
-      var stopsView = new app.StopsView({collection:directionStops, stops:this.options.stops});
+      var stopsView = new app.StopsView({collection:directionStops, stops:this.options.stops, direction:direction});
       Controller.showView(stopsView);
     }
   });
@@ -80,30 +80,25 @@ var app = app || {};
     },
     loadPredictions: function(e) {
       e.preventDefault();
+      var view = this;
 
       Controller.showLoadingText();
       window.StopTitle = $(e.srcElement).attr('data-stoptitle');
 
       var predictions = new app.Prediction({route:window.routeTag, routeTag:$(e.srcElement).attr('data-tag'),stop:$(e.srcElement).attr('data-stopid')});
       predictions.on('change', function() {
-
           var routePredictions = new app.Predictions(predictions)
-          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions});
+          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions, direction:view.options.direction});
           Controller.showView(predictionsView);
       });
 
       predictions.fetch({
         success: function(model, response) {
           var routePredictions = new app.Predictions(predictions)
-          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions});
+          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions, direction:view.options.direction});
           Controller.showView(predictionsView);
         },
         error: function(model, response) {
-          //window.check = window.setInterval(function() {
-          //app.Helpers.makeAlert({className:'alert-info', message: 'There are no predictions for this stop'});
-          //$('#routes').empty();
-          //window.clearInterval('check');
-          //}, 10000);
         } 
       });
     }
@@ -111,14 +106,13 @@ var app = app || {};
 
   app.PredictionView = BaseListView.extend({
     tagName:'table',
-    className: 'table table-condensed',
+    className: 'table',
     template: _.template($('#routePredictionListTemplate').html()),
     events: {
       'click button':'reloadPredictions'
     },
     initialize:function() {
       var view = this;
-      this.model.on('change', this.render, this);
       setInterval(function() {
         $('#reload-button').text('...');
         view.model.fetch();
@@ -127,8 +121,11 @@ var app = app || {};
     },
     render: function() {
       var view = this,
-          count = 0;
-      Controller.showTitle(window.StopTitle);
+          count = 0
+          tbody = this.make('tbody'),
+          direction = this.options.direction.toJSON();;
+      Controller.showTitle(direction.branch + ' ' + direction.name + ' ' + ' @ ' + window.StopTitle);
+      console.log(this.options.direction);
       _.each(this.collection.models[0].attributes,function(p) {
         if(p.minutes) {
           var minutesUntil = parseInt(p.minutes);
@@ -144,14 +141,14 @@ var app = app || {};
           } else {
             p.label = 'label-default';
           }
-
-          view.$el.append(view.template({data:p}));
+          $(tbody).append(view.template({data:p}));
         }
         count = count + 1;
         if(count === 5)
           return;
       });
 
+      this.$el.append(tbody);
       var reloadButton = this.make('button',{'id':'reload-button','class':'btn','style':'margin-top:10px;'}, '<i class="icon-refresh"></i>');
       view.$el.append(reloadButton);
 
