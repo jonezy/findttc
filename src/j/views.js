@@ -99,17 +99,19 @@ var app = app || {};
           Controller.showView(predictionsView);
         },
         error: function(model, response) {
-        } 
-      });
-      //window.check = window.setInterval(function() {
+          //window.check = window.setInterval(function() {
           //app.Helpers.makeAlert({className:'alert-info', message: 'There are no predictions for this stop'});
           //$('#routes').empty();
           //window.clearInterval('check');
-      //}, 10000);
+          //}, 10000);
+        } 
+      });
     }
   });
 
   app.PredictionView = BaseListView.extend({
+    tagName:'table',
+    className: 'table table-condensed',
     template: _.template($('#routePredictionListTemplate').html()),
     events: {
       'click button':'reloadPredictions'
@@ -118,39 +120,46 @@ var app = app || {};
       var view = this;
       this.model.on('change', this.render, this);
       setInterval(function() {
-        $('#reload-button').text('Reloading predictions...');
+        $('#reload-button').text('...');
         view.model.fetch();
       }, 20000);
       BaseListView.prototype.initialize.call(this);
     },
     render: function() {
-      var view = this;
-      Controller.showTitle(window.directionTitle + ' - ' + window.StopTitle);
+      var view = this,
+          count = 0;
+      Controller.showTitle(window.StopTitle);
       _.each(this.collection.models[0].attributes,function(p) {
         if(p.minutes) {
           var minutesUntil = parseInt(p.minutes);
           if(minutesUntil > 10) {
             p.label = 'label-success';
+            p.rowlabel = 'success';
           } else if (minutesUntil <= 10 && minutesUntil > 5) {
             p.label = 'label-warning';
+            p.rowlabel = 'warning';
           } else if (minutesUntil <= 5) {
             p.label = 'label-important';
+            p.rowlabel = 'error';
           } else {
             p.label = 'label-default';
           }
 
           view.$el.append(view.template({data:p}));
         }
+        count = count + 1;
+        if(count === 5)
+          return;
       });
 
-      var reloadButton = this.make('button',{'id':'reload-button','class':'btn btn-block','style':'margin-top:10px;'}, 'Reload');
+      var reloadButton = this.make('button',{'id':'reload-button','class':'btn','style':'margin-top:10px;'}, '<i class="icon-refresh"></i>');
       view.$el.append(reloadButton);
 
       return this;
     },
     reloadPredictions: function(e) {
       e.preventDefault();
-      $(e.srcElement).text('Reloading predicions...');
+      $(e.srcElement).text('...');
       this.model.on('change', function() {
         $(e.srcElement).text('Reload');
       });
