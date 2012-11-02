@@ -34,7 +34,10 @@ var app = app || {};
 
     makeAlert: function(opts) {
       var alert = $('<div class="alert">').text(opts.message);
-      var close = $('<a class="close" data-dismiss="alert" href="#">').text('x').prependTo(alert);
+      console.log(opts.showClose)
+      if(opts.showClose && opts.showClose === true) {
+        var close = $('<a class="close" data-dismiss="alert" href="#">').text('x').prependTo(alert);
+      }
       if(opts.className) alert.addClass(opts.className);
 
       alert.appendTo('#messages');

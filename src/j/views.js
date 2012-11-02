@@ -6,6 +6,7 @@ var app = app || {};
     tagName: 'ul',
     className: 'nav nav-tabs nav-stacked',
     initialize: function() {
+      this.childViews = [];
       $('#messages').empty();
     },
     render:function() {
@@ -86,11 +87,11 @@ var app = app || {};
       window.StopTitle = $(e.srcElement).attr('data-stoptitle');
 
       var predictions = new app.Prediction({route:window.routeTag, routeTag:$(e.srcElement).attr('data-tag'),stop:$(e.srcElement).attr('data-stopid')});
-      predictions.on('change', function() {
-          var routePredictions = new app.Predictions(predictions)
-          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions, direction:view.options.direction});
-          Controller.showView(predictionsView);
-      });
+      //predictions.on('change', function() {
+          //var routePredictions = new app.Predictions(predictions)
+          //var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions, direction:view.options.direction});
+          //Controller.showView(predictionsView);
+      //});
 
       predictions.fetch({
         success: function(model, response) {
@@ -101,6 +102,46 @@ var app = app || {};
         error: function(model, response) {
         } 
       });
+      setInterval(function() {
+        $('#reload-button').text('...');
+        predictions.fetch({
+          success: function(model, response) {
+            var routePredictions = new app.Predictions(predictions)
+            var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions, direction:view.options.direction});
+            Controller.showView(predictionsView);
+          },
+          error: function(model, response) {
+          } 
+        });
+      }, 40000);
+    }
+  });
+
+  app.PredictionReloader = BaseListView.extend({
+    el:'#actions',
+    events: {
+      'click button':'reloadPredictions'
+    },
+    initialize: function() {
+      this.$el.empty();
+    },
+    render: function() {
+      var reloadButton = this.make('button',{'id':'reload-button','class':'btn','style':'margin-top:10px;'}, '<i class="icon-refresh"></i>');
+      this.$el.append(reloadButton);
+    },
+    reloadPredictions: function(e) {
+      e.preventDefault();
+      $(e.srcElement).text('...');
+      var view = this;
+      this.model.fetch({
+          success: function(model, response) {
+            var routePredictions = new app.Predictions(model)
+            var predictionsView = new app.PredictionView({collection:routePredictions,model:model, direction:view.options.direction});
+            Controller.showView(predictionsView);
+          },
+          error: function(model, response) {
+          } 
+        });
     }
   });
 
@@ -113,10 +154,6 @@ var app = app || {};
     },
     initialize:function() {
       var view = this;
-      setInterval(function() {
-        $('#reload-button').text('...');
-        view.model.fetch();
-      }, 20000);
       BaseListView.prototype.initialize.call(this);
     },
     render: function() {
@@ -124,42 +161,49 @@ var app = app || {};
           count = 0
           tbody = this.make('tbody'),
           direction = this.options.direction.toJSON();;
-      Controller.showTitle(direction.branch + ' ' + direction.name + ' ' + ' @ ' + window.StopTitle);
-      console.log(this.options.direction);
-      _.each(this.collection.models[0].attributes,function(p) {
-        if(p.minutes) {
-          var minutesUntil = parseInt(p.minutes);
-          if(minutesUntil > 10) {
-            p.label = 'label-success';
-            p.rowlabel = 'success';
-          } else if (minutesUntil <= 10 && minutesUntil > 5) {
-            p.label = 'label-warning';
-            p.rowlabel = 'warning';
-          } else if (minutesUntil <= 5) {
-            p.label = 'label-important';
-            p.rowlabel = 'error';
-          } else {
-            p.label = 'label-default';
+
+      Controller.showTitle(direction.branch + ' ' + direction.name + ' ' + ': ' + window.StopTitle);
+
+      _.each(this.collection.models[0].attributes, function(p) {
+
+          if(p.minutes) {
+            var minutesUntil = parseInt(p.minutes);
+            if(minutesUntil > 10) {
+              p.label = 'label-success';
+              p.rowlabel = 'success';
+            } else if (minutesUntil <= 10 && minutesUntil > 5) {
+              p.label = 'label-warning';
+              p.rowlabel = 'warning';
+            } else if (minutesUntil <= 5) {
+              p.label = 'label-important';
+              p.rowlabel = 'error';
+            } else {
+              p.label = 'label-default';
+            }
+            $(tbody).append(view.template({data:p}));
+            count = count + 1;
           }
-          $(tbody).append(view.template({data:p}));
-        }
-        count = count + 1;
-        if(count === 5)
-          return;
       });
+      console.log(count);
+      if(count === 0) {
+        app.Helpers.makeAlert({message:'There are no predictions for this stop', className:'alert-info'});
+      } else {
+        if(count <= 5) {
+          //if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+            //$('#routes').height(190);
+          //}
+        }
+        this.$el.append(tbody);
 
-      this.$el.append(tbody);
-      var reloadButton = this.make('button',{'id':'reload-button','class':'btn','style':'margin-top:10px;'}, '<i class="icon-refresh"></i>');
-      view.$el.append(reloadButton);
-
+        var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction});
+        reloader.render();
+        //this.childViews.push(reloader);
+      }
       return this;
     },
     reloadPredictions: function(e) {
       e.preventDefault();
       $(e.srcElement).text('...');
-      this.model.on('change', function() {
-        $(e.srcElement).text('Reload');
-      });
       this.model.fetch();
     }
   });
@@ -231,7 +275,12 @@ var app = app || {};
 
   var Controller = {
     showView: function(view) {
-      view.render();
+      if(this.currentView) {
+        this.currentView.close();
+      }
+
+      this.currentView = view;
+      this.currentView.render();
       $('#routes').empty();
       $('#routes').append(view.el);
     },

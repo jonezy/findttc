@@ -1,9 +1,9 @@
 <html>
   <head>
     <title>transit finder</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <link href="c/bootstrap.min.css" rel="stylesheet">
     <link href="c/bootstrap-responsive.min.css" rel="stylesheet">
@@ -23,7 +23,7 @@
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container">
+        <div class="container-fluid">
           <a class="brand" href="/">transit finder</a>
         </div>
       </div>
@@ -31,15 +31,16 @@
 
     <div class="container-fluid">
       <h5 id="title" style="margin-bottom:4px;">What kind of transit are you taking?</h5>
-      <div id="messages"></div>
       <div class="row-fluid">
-        <div class="span12">
+        <div class="span6">
+      <div id="messages"></div>
           <div id="routes">
             <ul style="margin-top:5px;" class="nav nav-tabs nav-stacked">
               <li><a href="#" data-type='s'><i class="icon-chevron-right"></i>Street Car</a></li>
               <li><a href="#" data-type='b'><i class="icon-chevron-right"></i>Bus</a></li>
             </ul>
           </div>
+          <div id="actions"></div>
         </div>
       </div>
     </div> 
