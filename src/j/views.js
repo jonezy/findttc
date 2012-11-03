@@ -109,7 +109,7 @@ var app = app || {};
   });
 
   app.PredictionReloader = BaseListView.extend({
-    el:'#actions',
+    el:'#top-nav',
     events: {
       'click button':'reloadPredictions'
     },
@@ -117,7 +117,7 @@ var app = app || {};
       this.$el.empty();
     },
     render: function() {
-      var reloadButton = this.make('button',{'id':'reload-button','class':'btn','style':'margin-top:10px;'}, '<i class="icon-refresh"></i>');
+      var reloadButton = this.make('button',{'id':'reload-button','class':'btn btn-navbar reload'}, '<i class="icon-refresh icon-white"></i>');
       this.$el.append(reloadButton);
     },
     reloadPredictions: function(e) {

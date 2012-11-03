@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>transit finder</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="c/bootstrap.min.css" rel="stylesheet">
+    <link href="c/stops.css" rel="stylesheet">
+    <!--<link href="c/bootstrap-responsive.min.css" rel="stylesheet">-->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-177636-19']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">transit finder</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              <li class="active"><a href="about.html">About</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          <h1>About</h1>
+          <p>This thing is made by <a href="http://twitter.com/jonezy" target="_twitter">@jonezy</a> in his spare time for no other reason than because he can.  He also uses the TTC alot and likes to have some 
+          reasonable idea of when the fuck a street car/bus will show up (but wouldn't we all?).</p>
+          <p>This project is open source, the code is @ <a href="http://www.github.com/jonezy/transit-finder" target="_github">github</a> and the author (<a href="http://twitter.com/jonezy" target="_twitter">@jonezy</a>) welcomes comments/suggestions/praise/feedback and praise</p>
+          <h2>Technical Details</h2>
+          <p>This site is all javascript, jQuery + Backbone + Underscore<p>
+          <p>All of the data is pulled live from the nextbus.com undocumented JSON server (seriously, I just changed XML in the query string to JSON and it worked!).  
+             In theory, this could be changed really quickly to use any agency that provides data to nextbus.com</p>
+        </div>
+      </div>
+    </div> 
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyADlQI2Ws1yt0KLSj6l-7nBMd9koj22PH8&sensor=false"></script>
+    <script src="j/lib/jquery-1.8.2.js"></script>
+    <script src="j/lib/bootstrap.min.js"></script>
+  </body>
+</html>
