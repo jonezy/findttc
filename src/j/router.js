@@ -5,14 +5,7 @@ var app = app || {};
 app.Manager = Backbone.Router.extend({
     routes: {
       ":routetag/:stoptag":"loadPredictions"
-      //"*path":"loadApp"
     },
-
-    //loadApp: function() {
-      //console.log('here');
-      //var appView = new app.AppView;
-      //appView.render();
-    //},
     loadPredictions: function(routetag, stoptag) {
 
       $('#routes').empty();
@@ -29,27 +22,20 @@ app.Manager = Backbone.Router.extend({
         _.each(routeDetail.get('direction'), function(d) {
           _.each(d.stop, function(s) {
             if(s.tag === stoptag) {
-              direction = d;
-              var predictions = new app.Prediction({route:routetag, routeTag:stoptag});
-              router.actuallyLoadPredictions(predictions, new app.Direction(direction), routeStop);
+              router.actuallyLoadPredictions(new app.Prediction({route:routetag, routeTag:stoptag}), d, routeStop);
             }
           });
 
         });
       });
       routeDetail.fetch();
-
     },
-    actuallyLoadPredictions: function(predictions, directions, stop) {
-
+    actuallyLoadPredictions: function(predictions, direction, stop) {
       predictions.fetch({
         success: function(model, response) {
-          var routePredictions = new app.Predictions(predictions)
-          var predictionsView = new app.PredictionView({collection:routePredictions,model:predictions,direction:direction, stop:stop});
+          var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction, stop:stop});
           app.Controller.showView(predictionsView);
-        },
-        error: function(model, response) {
-        } 
+        }
       });
     }
   });
