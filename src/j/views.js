@@ -97,7 +97,7 @@ var app = app || {};
       this.model.fetch({
         success: function(model, response) {
           var routePredictions = new app.Predictions(model)
-          var predictionsView = new app.PredictionView({collection:routePredictions,model:model, direction:view.options.direction});
+          var predictionsView = new app.PredictionView({collection:routePredictions,model:model, direction:view.options.direction,stop:view.options.stop});
           Controller.showView(predictionsView);
         }
       });
@@ -146,17 +146,12 @@ var app = app || {};
       if(count === 0) {
         app.Helpers.makeAlert({message:'There are no predictions for this stop', className:'alert-info'});
       } else {
-        if(count <= 5) {
-          //if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-            //$('#routes').height(190);
-          //}
-        }
         this.$el.append(tbody);
 
-        var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction});
-        reloader.render();
-        //this.childViews.push(reloader);
       }
+
+        var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction, stop:view.options.stop});
+        reloader.render();
       return this;
     },
     reloadPredictions: function(e) {
