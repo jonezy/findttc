@@ -29,14 +29,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">transit finder</a>
+          <a class="brand" data-bypass="true" href="/">transit finder</a>
           <div id="top-nav">
 
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="about.html">About</a></li>
+              <li class="active"><a data-bypass="true" href="/">Home</a></li>
+              <li><a data-bypass="true" href="about.html">About</a></li>
             </ul>
           </div>
         </div>
@@ -46,10 +46,10 @@
     <div class="container">
       <div class="row">
         <div class="span8">
-      <h5 id="title" style="margin-bottom:4px;">What kind of transit are you taking?</h5>
+      <h5 id="title" style="margin-bottom:4px;display:none;">What kind of transit are you taking?</h5>
       <div id="messages"></div>
           <div id="routes">
-            <ul style="margin-top:5px;" class="nav nav-tabs nav-stacked">
+            <ul style="margin-top:5px;display:none;" id="type-selector" class="nav nav-tabs nav-stacked">
               <li><a href="#" data-type='s'><i class="icon-chevron-right"></i>Street Car</a></li>
               <li><a href="#" data-type='b'><i class="icon-chevron-right"></i>Bus</a></li>
             </ul>
@@ -65,7 +65,7 @@
 <li><a href="" data-tag="<%= tag %>" data-directiontitle="<%= title %>" data-direction="<%= name %>"><i class="icon-chevron-right"></i><%= title %></a></li>
     </script>
     <script type="text/template" id="routeStopListTemplate">
-      <li><a href="" data-tag="<%= data.tag %>" data-stopid="<%= stopId %>" data-stoptitle="<%= data.title %>"><i class="icon-chevron-right"></i><%= data.title %></a></li>
+<li><a href="#/<%= routeTag %>/<%= data.tag %>" data-tag="<%= data.tag %>" data-stopid="<%= stopId %>" data-stoptitle="<%= data.title %>"><i class="icon-chevron-right"></i><%= data.title %></a></li>
     </script>
     <script type="text/template" id="routePredictionListTemplate">
 <tr class="<%= data.rowlabel %>">

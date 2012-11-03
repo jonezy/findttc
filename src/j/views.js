@@ -67,44 +67,14 @@ var app = app || {};
 
   app.StopsView = BaseListView.extend({
     template: _.template($('#routeStopListTemplate').html()),
-    events: {
-      'click a':'loadPredictions'
-    },
     render: function() {
       var view = this;
       Controller.showTitle(window.directionTitle);
       this.collection.each(function(d) {
         var stop = view.options.stops.where({tag: d.get('tag')})[0];
-        view.$el.append(view.template({data:stop.toJSON(), stopId: stop.get('stopId') ? stop.get('stopId') : 0}));
+        view.$el.append(view.template({data:stop.toJSON(), route:window.routeTag, stopId: stop.get('stopId') ? stop.get('stopId') : 0}));
       });
       return this;
-    },
-    loadPredictions: function(e) {
-      e.preventDefault();
-      var view = this;
-
-      Controller.showLoadingText();
-      window.StopTitle = $(e.srcElement).attr('data-stoptitle');
-
-      var predictions = new app.Prediction({route:window.routeTag, routeTag:$(e.srcElement).attr('data-tag'),stop:$(e.srcElement).attr('data-stopid')});
-      predictions.fetch({
-        success: function(model, response) {
-            view.showPredictionsView(model);
-        }
-      });
-      setInterval(function() {
-        $('#reload-button').text('...');
-        predictions.fetch({
-          success: function(model, response) {
-            view.showPredictionsView(model);
-          }
-        });
-      }, 40000);
-    },
-    showPredictionsView: function(model) {
-      var routePredictions = new app.Predictions(model)
-      var predictionsView = new app.PredictionView({collection:routePredictions,model:model, direction:this.options.direction});
-      Controller.showView(predictionsView);
     }
   });
 
@@ -149,10 +119,10 @@ var app = app || {};
       var view = this,
           count = 0
           tbody = this.make('tbody'),
-          direction = this.options.direction.toJSON();;
+          direction = this.options.direction,
+          stop = this.options.stop;
 
-      Controller.showTitle(window.StopTitle);
-$('#title').append(' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
+      Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
       _.each(this.collection.models[0].attributes, function(p) {
 
           if(p.minutes) {
@@ -203,40 +173,18 @@ $('#title').append(' <small>(' + direction.branch + ' ' + direction.name + ')</s
     },
     render:function() {
       var view = this;
+      $('#title').show();
+      $('#type-selector').show();
 
-      //var position = app.Helpers.locate(function(position) {
-        //if(position) {
-          //view.handleLocated(position);
-        //} else {
-          var routeList = new app.Routes;
-          routeList.fetch();
-          routeList.on('reset', function() {
-            if(routeList === undefined || (routeList && routeList.length ===0))
-               alert('The route list is empty');
-            view.collection = routeList;
-          });
-        //}
-      //});
+      var routeList = new app.Routes;
+      routeList.fetch();
+      routeList.on('reset', function() {
+        if(routeList === undefined || (routeList && routeList.length ===0))
+          alert('The route list is empty');
+        view.collection = routeList;
+      });
 
       return this;
-    },
-    handleLocated: function(position) {
-      var routesNear = new app.RoutesNearCollection({lat:position.coords.latitude,long:position.coords.longitude});
-        var routeCollection = new app.Routes;
-        routesNear.fetch();
-        routesNear.on('reset', function() {
-          routesNear.each(function(r) {
-            var detail = new app.RouteNearDetailModel({uri:r.get('uri')});
-            detail.fetch();
-            detail.on('change', function() {
-              detail.set({distance:r.get('distance')}, {silent:true});
-              routeCollection.add(detail); 
-            });
-          });
-
-          var listView = new app.RoutesListView({collection:routeCollection});
-          Controller.showView(listView);
-      });
     },
     loadRoutes: function(e) {
       e.preventDefault();
@@ -268,12 +216,14 @@ $('#title').append(' <small>(' + direction.branch + ' ' + direction.name + ')</s
       }
 
       this.currentView = view;
-      this.currentView.render();
+      if(this.currentView.render) {
+        this.currentView.render();
+      }
       $('#routes').empty();
       $('#routes').append(view.el);
     },
     showTitle: function(message) {
-      $('#title').text(message);
+      $('#title').html(message);
       $('#title').show();
     },
     showLoadingText: function() {
@@ -281,4 +231,6 @@ $('#title').append(' <small>(' + direction.branch + ' ' + direction.name + ')</s
       $('#routes').text('Loading...');
     }
   };
+
+  app.Controller = Controller;
 })();
