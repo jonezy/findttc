@@ -47,6 +47,7 @@ $(function() {
       Backbone.history.navigate(href.attr, false);
     }
   });
+
   if(window.location.hash)
     app.Router.navigate(window.location.hash);
 });

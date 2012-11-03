@@ -2,7 +2,7 @@ var app = app || {};
 
 (function() {
 
-  app.Manager = Backbone.Router.extend({
+app.Manager = Backbone.Router.extend({
     routes: {
       ":routetag/:stoptag":"loadPredictions"
       //"*path":"loadApp"
@@ -53,6 +53,5 @@ var app = app || {};
       });
     }
   });
-
 
 })();

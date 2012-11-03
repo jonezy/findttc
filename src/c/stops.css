@@ -36,7 +36,8 @@ p {margin: 0 0 5px;}
   #routes {height:300px;overflow-y:auto;}
 }
 /* Smartphones (landscape) ----------- */
-@media only screen and (max-width : 480px) {
-  /*#routes {height:100px;overflow-y:auto;}*/
+@media screen and (min-width: 321px){
+  body {margin-bottom:85px;}
+  #routes {height:170px;overflow-y:auto;}
 }
 
