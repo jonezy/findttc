@@ -61,7 +61,6 @@ var app = app || {};
             return parseInt(num.minutes);
           });
         }
-        this.sort();
       }
       return "";
     },

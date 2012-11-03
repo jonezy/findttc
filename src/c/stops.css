@@ -2,8 +2,6 @@ body {
   padding-top:45px;
 }
 .navbar-inner {-webkit-border-radius: 0px;-moz-border-radius: 0px;border-radius: 0px;}
-.navbar .brand {margin-left:0px !important;}
-.navbar .container-fluid {margin-left:0px;padding-left:0;}
 .nav-tabs.nav-stacked {margin-bottom:10px;}
 .alert {margin-bottom:10px;}
 div.label {width:20px;float:left;text-align:center;margin:0px 5px;}
@@ -26,18 +24,13 @@ p {margin: 0 0 0px;}
     padding-right: 0px;
     padding-left: 0px;
   }
-  .container-fluid {
+  .container {
     padding-right: 10px;
     padding-left: 10px;
   }
-  .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
-    margin-right: 0px;
-    margin-left: 0px;
-  }
-  .navbar .brand {float:none;}
-  .navbar-inner .container-fluid {margin-left:5px;text-align:center;float:none;}
 
-  #routes {height:200px;overflow-y:auto;}
+  .navbar .brand {float:none;}
+  .navbar-inner .container {margin-left:5px;text-align:center;float:none;}
 }
 
 @media (max-width: 979px) {
@@ -45,16 +38,21 @@ p {margin: 0 0 0px;}
   .navbar-fixed-top {
     margin-bottom: 5px;
   }
-  .container-fluid {
-    padding-right: 10px;
-    padding-left: 10px;
+  .container {
+    /*padding: 10px;*/
+    margin-right:10px;
+    margin-left:10px;
   }
-  .navbar .brand {margin-left:-5px !important;}
-  #routes {height:180px;overflow-y:auto;}
+  .navbar .container {margin-left:auto;margin-right:auto;}
 }
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 480px) {
+@media only screen and (max-width : 320px) {
 /* Styles */
-  #routes {height:200px;overflow-y:auto;}
+  #routes {height:260px;overflow-y:auto;}
+  #routes.predictions {height:200px;}
 }
+/* Smartphones (landscape) ----------- */
+@media only screen and (max-device-width : 481px) {
+  /*#routes {height:120px;overflow-y:auto;}*/
+  /*#routes.predictions {height:90px;}*/
+}
+
