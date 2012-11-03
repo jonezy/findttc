@@ -35,6 +35,7 @@
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
+              <li class="active"><a href="/">Home</a></li>
               <li><a href="about.html">About</a></li>
             </ul>
           </div>
@@ -70,8 +71,8 @@
 <tr class="<%= data.rowlabel %>">
   <td>
 <div class="prediction" <% if(!data.title) {%>style="padding-top:7px;height:23px;"<% } %>>
-<div class="pull-left"></div> <div class="label <%= data.label %>"><%= data.minutes %></div> <div class="pull-left">minutes</div>
-<% if(data.title) { %><br style="clear:both" /><small>(<%= data.title %>)<small><% } %>
+<div class="pull-left"></div> <div class="label <%= data.label %>"><%= data.minutes %></div> <div class="pull-left">minutes
+<% if(data.title) { %><br style="clear:both" /><small>(<%= data.title %>)<small><% } %></div>
 </div>
   <td>
 </tr>
@@ -87,5 +88,24 @@
     <script src="j/views.js"></script>
     <script src="j/router.js"></script>
     <script src="j/app.js"></script>
+    <script>
+if( !window.location.hash && window.addEventListener ){
+    window.addEventListener( "load",function() {
+        setTimeout(function(){
+            window.scrollTo(0, 0);
+        }, 0);
+    });
+    window.addEventListener( "orientationchange",function() {
+        setTimeout(function(){
+            window.scrollTo(0, 0);
+        }, 0);
+    });
+    window.addEventListener( "touchstart",function() {
+         setTimeout(function(){
+             window.scrollTo(0, 0);
+         }, 0);
+     });
+}
+    </script>
   </body>
 </html>

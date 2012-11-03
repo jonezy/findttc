@@ -151,7 +151,8 @@ var app = app || {};
           tbody = this.make('tbody'),
           direction = this.options.direction.toJSON();;
 
-      Controller.showTitle(direction.branch + ' ' + direction.name + ' ' + ': ' + window.StopTitle);
+      Controller.showTitle(window.StopTitle);
+$('#title').append(' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
       _.each(this.collection.models[0].attributes, function(p) {
 
           if(p.minutes) {

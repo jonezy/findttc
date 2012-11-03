@@ -4,7 +4,7 @@ body {
 .navbar-inner {-webkit-border-radius: 0px;-moz-border-radius: 0px;border-radius: 0px;position:relative;}
 .nav-tabs.nav-stacked {margin-bottom:10px;}
 .alert {margin-bottom:10px;}
-div.label {width:20px;float:left;text-align:center;margin:-1px 5px;}
+div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:0px 5px 0px 0px;}
 td {font-size:90%;color:#999;}
 td small {font-size:70%;}
 .table {margin-bottom:10px;}
@@ -23,39 +23,20 @@ p {margin: 0 0 5px;}
 }
 @media (max-width: 767px) {
   body {padding-top:0px;}
-  /*body {*/
-    /*padding-right: 10px !important;*/
-    /*padding-left: 10px !important;*/
-  /*}*/
-  /*.container {*/
-    /*padding-right: 10px;*/
-    /*padding-left: 10px;*/
-  /*}*/
-
   .navbar .brand {margin-left:0 !important;}
-  /*.navbar-inner .container {margin-left:5px;text-align:center;float:none;}*/
 }
 
 @media (max-width: 979px) {
   body {padding-top:0px;}
-  /*.navbar-fixed-top {*/
-    /*margin-bottom: 5px;*/
-  /*}*/
-  /*.container {*/
-    /*margin-right:10px;*/
-    /*margin-left:10px;*/
-  /*}*/
-  /*.navbar .container {margin-left:auto;margin-right:auto;}*/
   .btn-navbar.reload {position:absolute !important;right:50px !important;}
 }
+
 @media only screen and (max-width : 320px) {
-/* Styles */
-  #routes {height:270px;overflow-y:auto;}
-  #routes.predictions {height:200px;}
+  body {margin-bottom:35px;}
+  #routes {height:300px;overflow-y:auto;}
 }
 /* Smartphones (landscape) ----------- */
-@media only screen and (max-device-width : 481px) {
-  /*#routes {height:120px;overflow-y:auto;}*/
-  /*#routes.predictions {height:90px;}*/
+@media only screen and (max-width : 480px) {
+  /*#routes {height:100px;overflow-y:auto;}*/
 }
 

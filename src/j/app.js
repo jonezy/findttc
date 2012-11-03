@@ -27,6 +27,9 @@ Backbone.View.prototype.close = function () {
   return this;
 }
 
+  addEventListener("load", function() {
+    window.scrollTo(1, 0);
+}, false);
 $(function() {
   var appView = new app.AppView;
   appView.render();
