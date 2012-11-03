@@ -1,17 +1,17 @@
 <html>
   <head>
-    <title>transit finder</title>
+    <title>find ttc</title>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="c/bootstrap.min.css" rel="stylesheet">
     <link href="c/stops.css" rel="stylesheet">
-    <link href="c/bootstrap-responsive.min.css" rel="stylesheet">
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-177636-19']);
       _gaq.push(['_trackPageview']);
+      _gaq.push(['_trackPageview', location.pathname + location.search + location.hash]);
 
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -70,9 +70,9 @@
     <script type="text/template" id="routePredictionListTemplate">
 <tr class="<%= data.rowlabel %>">
   <td>
-<div class="prediction" <% if(!data.title) {%>style="padding-top:7px;height:23px;"<% } %>>
-<div class="pull-left"></div> <div class="label <%= data.label %>"><%= data.minutes %></div> <div class="pull-left">minutes
-<% if(data.title) { %><br style="clear:both" /><small>(<%= data.title %>)<small><% } %></div>
+<div class="prediction">
+<div class="label <%= data.label %>"><%= data.minutes %></div>
+<small>(<%= data.title %>)<small>
 </div>
   <td>
 </tr>

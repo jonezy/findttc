@@ -121,12 +121,12 @@ var app = app || {};
           tbody = this.make('tbody'),
           direction = this.options.direction,
           stop = this.options.stop;
+          console.log(direction);
 
-      Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
       _.each(this.collection.models[0].attributes, function(p) {
-
           if(p.minutes) {
             var minutesUntil = parseInt(p.minutes);
+            if(!p.title) p.title = direction.title;
             if(minutesUntil > 10) {
               p.label = 'label-success';
               p.rowlabel = 'success';
@@ -143,15 +143,16 @@ var app = app || {};
             count = count + 1;
           }
       });
+
       if(count === 0) {
         app.Helpers.makeAlert({message:'There are no predictions for this stop', className:'alert-info'});
       } else {
         this.$el.append(tbody);
-
       }
 
-        var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction, stop:view.options.stop});
-        reloader.render();
+      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction, stop:view.options.stop});
+      reloader.render();
+
       return this;
     },
     reloadPredictions: function(e) {

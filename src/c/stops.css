@@ -6,10 +6,9 @@ body {
 .alert {margin-bottom:10px;}
 div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:0px 5px 0px 0px;}
 td {font-size:90%;color:#999;}
-td small {font-size:70%;}
+td small {font-size:80%;}
 .table {margin-bottom:10px;}
-.table th, .table td {border-top:solid 1px #fff;line-height:normal;height:30px;}
-td .prediction {height:30px;}
+.table th, .table td {border-top:solid 1px #fff;line-height:normal;}
 .nav-tabs.nav-stacked > li > a {font-size:90%;}
 #top-nav {float:left;}
 .navbar .btn-navbar.reload {display:inline;}
@@ -22,13 +21,18 @@ p {margin: 0 0 5px;}
   opacity: .25;
 }
 @media (max-width: 767px) {
-  body {padding-top:0px;}
-  .navbar .brand {margin-left:0 !important;}
+  body {padding-top:0px;padding-left:10px;padding-right:10px;}
+  .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+margin-left: -10px;
+margin-right: -10px;
+}
 }
 
 @media (max-width: 979px) {
   body {padding-top:0px;}
   .btn-navbar.reload {position:absolute !important;right:50px !important;}
+  .row {margin-left: 0px;}
+  /*.container {margin-left:10px;margin-right:10px;}*/
 }
 
 @media only screen and (max-width : 320px) {

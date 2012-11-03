@@ -33,6 +33,8 @@ app.Manager = Backbone.Router.extend({
     actuallyLoadPredictions: function(predictions, direction, stop) {
       predictions.fetch({
         success: function(model, response) {
+          app.Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
+
           var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction, stop:stop});
           app.Controller.showView(predictionsView);
         }
