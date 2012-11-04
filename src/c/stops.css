@@ -7,11 +7,11 @@ body {
 -webkit-transition: all .2s linear;};
 .navbar .brand:hover {color:#ddd;}
 .alert {margin-bottom:10px;}
-div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:-1px 5px 0px 0px;}
+div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:-2px 5px 0px 0px;}
 td {font-size:90%;color:#999;}
-td small {font-size:80%;}
+td small {font-size:90%;overflow:hidden;float:left;width:88%;}
 .table {margin-bottom:10px;}
-.table th, .table td {border-top:solid 1px #fff;line-height:normal;padding-top:10px;}
+.table th, .table td {border-top:solid 1px #fff;line-height:normal;padding-top:12px;padding-bottom:10px;}
 .nav-tabs.nav-stacked > li > a {font-size:90%;}
 #top-nav {float:left;}
 .navbar .btn-navbar.reload {display:inline;}
@@ -26,9 +26,9 @@ p {margin: 0 0 5px;}
 @media (max-width: 767px) {
   body {padding-top:0px;padding-left:10px;padding-right:10px;}
   .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
-margin-left: -10px;
-margin-right: -10px;
-}
+    margin-left: -10px;
+    margin-right: -10px;
+  }
 }
 
 @media (max-width: 979px) {
@@ -41,9 +41,11 @@ margin-right: -10px;
 @media only screen and (max-width : 320px) {
   body {margin-bottom:35px;}
   #routes {height:300px;overflow-y:auto;}
+div.label {margin-top:0px;}
 }
 /* Smartphones (landscape) ----------- */
 @media only screen and (min-width: 321px) and (max-device-width:960px) {  
   body {margin-bottom:85px;}
   #routes {height:170px;overflow-y:auto;}
+div.label {margin-top:-1px;}
 }
