@@ -3,6 +3,9 @@ body {
 }
 .navbar-inner {-webkit-border-radius: 0px;-moz-border-radius: 0px;border-radius: 0px;position:relative;}
 .nav-tabs.nav-stacked {margin-bottom:10px;}
+.navbar .brand {font-weight:400;color:#555;text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
+-webkit-transition: all .2s linear;};
+.navbar .brand:hover {color:#ddd;}
 .alert {margin-bottom:10px;}
 div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:-1px 5px 0px 0px;}
 td {font-size:90%;color:#999;}
