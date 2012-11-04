@@ -96,8 +96,7 @@ var app = app || {};
       var view = this;
       this.model.fetch({
         success: function(model, response) {
-          var routePredictions = new app.Predictions(model)
-          var predictionsView = new app.PredictionView({collection:routePredictions,model:model, direction:view.options.direction,stop:view.options.stop});
+          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction,stop:view.options.stop});
           Controller.showView(predictionsView);
         }
       });
@@ -121,7 +120,6 @@ var app = app || {};
           tbody = this.make('tbody'),
           direction = this.options.direction,
           stop = this.options.stop;
-          console.log(direction);
 
       _.each(this.collection.models[0].attributes, function(p) {
           if(p.minutes) {

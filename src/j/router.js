@@ -31,14 +31,16 @@ app.Manager = Backbone.Router.extend({
       routeDetail.fetch();
     },
     actuallyLoadPredictions: function(predictions, direction, stop) {
-      predictions.fetch({
-        success: function(model, response) {
-          app.Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
+      predictions.on('change', function() {
+        app.Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
 
-          var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction, stop:stop});
-          app.Controller.showView(predictionsView);
-        }
+        var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction, stop:stop});
+        app.Controller.showView(predictionsView);
       });
+      predictions.fetch();
+      setInterval(function() {
+        predictions.fetch();
+      }, 30000);
     }
   });
 
