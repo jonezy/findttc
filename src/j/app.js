@@ -28,8 +28,8 @@ Backbone.View.prototype.close = function () {
 }
 
 $(function() {
-  var appView = new app.AppView;
-  appView.render();
+  //var appView = new app.AppView;
+  //appView.render();
 
   app.Router = new app.Manager;
   Backbone.history.start({ pushState: false });

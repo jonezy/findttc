@@ -50,8 +50,8 @@
       <div id="messages"></div>
           <div id="routes">
             <ul style="margin-top:5px;display:none;" id="type-selector" class="nav nav-tabs nav-stacked">
-              <li><a href="#" data-type='s'><i class="icon-chevron-right"></i>Street Car</a></li>
-              <li><a href="#" data-type='b'><i class="icon-chevron-right"></i>Bus</a></li>
+              <li><a href="#/s" data-type='s'><i class="icon-chevron-right"></i>Street Car</a></li>
+              <li><a href="#/b" data-type='b'><i class="icon-chevron-right"></i>Bus</a></li>
             </ul>
           </div>
           <div id="actions"></div>
@@ -59,13 +59,13 @@
       </div>
     </div> 
     <script type="text/template" id="routeListTemplate">
-<li><a href="" data-routetag="<%= tag %>" data-title="<%= title %>"><i class="icon-chevron-right"></i><%= title %></a></li>
+      <li><a href="#/<%= app.type %>/<%= tag %>"><i class="icon-chevron-right"></i><%= title %></a></li>
     </script>
     <script type="text/template" id="routeDirectionListTemplate">
-<li><a href="" data-tag="<%= tag %>" data-directiontitle="<%= title %>" data-direction="<%= name %>"><i class="icon-chevron-right"></i><%= title %></a></li>
+      <li><a href="#/<%= app.type %>/<%= app.route %>/<%= tag %>"><i class="icon-chevron-right"></i><%= title %></a></li>
     </script>
     <script type="text/template" id="routeStopListTemplate">
-<li><a href="#/<%= routeTag %>/<%= data.tag %>" data-tag="<%= data.tag %>" data-stopid="<%= stopId %>" data-stoptitle="<%= data.title %>"><i class="icon-chevron-right"></i><%= data.title %></a></li>
+      <li><a href="#/p/<%= app.route %>/<%= data.tag %>"><i class="icon-chevron-right"></i><%= data.title %></a></li>
     </script>
     <script type="text/template" id="routePredictionListTemplate">
 <tr class="<%= data.rowlabel %>">
