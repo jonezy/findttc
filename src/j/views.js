@@ -19,49 +19,18 @@ var app = app || {};
 
   app.RoutesListView = BaseListView.extend({
     template: _.template($('#routeListTemplate').html()),
-    events: {
-      "click a":"loadRouteDetail"
-    },
     render: function() {
-      Controller.showTitle('Routes');
       BaseListView.prototype.render.call(this);
-
       return this;
-    },
-    loadRouteDetail: function(e) {
-      e.preventDefault();
-      Controller.showLoadingText();
-      window.routeTag = $(e.srcElement).attr('data-routetag');
-      window.routeTitle = $(e.srcElement).attr('data-title');
-      var routeDetail = new app.RouteDetail({tag:$(e.srcElement).attr('data-routetag')});
-      routeDetail.on('change', function() {
-        var directionsView = new app.DirectionsListView({collection:new app.Directions(routeDetail.get('direction')),stops:new app.Stops(routeDetail.get('stop'))});
-        Controller.showView(directionsView);
-      });
-      routeDetail.fetch();
     }
   });
 
   app.DirectionsListView = BaseListView.extend({
     template: _.template($('#routeDirectionListTemplate').html()),
-    events: {
-      'click a':'loadStops'
-    },
     render: function() {
-      Controller.showTitle(window.routeTitle);
       BaseListView.prototype.render.call(this);
 
       return this;
-    },
-    loadStops: function(e) {
-      e.preventDefault();
-      Controller.showLoadingText();
-      window.directionTitle = $(e.srcElement).attr('data-directiontitle');
-      var tag = $(e.srcElement).attr('data-tag');
-      var direction = this.collection.where({tag:tag})[0];
-      var directionStops = new app.Stops(direction.get('stop'));
-      var stopsView = new app.StopsView({collection:directionStops, stops:this.options.stops, direction:direction});
-      Controller.showView(stopsView);
     }
   });
 
@@ -69,10 +38,12 @@ var app = app || {};
     template: _.template($('#routeStopListTemplate').html()),
     render: function() {
       var view = this;
-      Controller.showTitle(window.directionTitle);
       this.collection.each(function(d) {
-        var stop = view.options.stops.where({tag: d.get('tag')})[0];
-        view.$el.append(view.template({data:stop.toJSON(), route:window.routeTag, stopId: stop.get('stopId') ? stop.get('stopId') : 0}));
+        var routeStop = _.find(view.options.stops.get('stop'), function(stop) {
+          if(stop.tag === d.get('tag'))
+            return stop;
+        });
+        view.$el.append(view.template({data:routeStop, stopId: routeStop.stopId ? routeStop.stopId : 0}));
       });
       return this;
     }
@@ -96,7 +67,7 @@ var app = app || {};
       var view = this;
       this.model.fetch({
         success: function(model, response) {
-          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction,stop:view.options.stop});
+          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction});
           Controller.showView(predictionsView);
         }
       });
@@ -107,9 +78,6 @@ var app = app || {};
     tagName:'table',
     className: 'table',
     template: _.template($('#routePredictionListTemplate').html()),
-    events: {
-      'click button':'reloadPredictions'
-    },
     initialize:function() {
       $('#routes').addClass('predictions');
       BaseListView.prototype.initialize.call(this);
@@ -118,8 +86,7 @@ var app = app || {};
       var view = this,
           count = 0
           tbody = this.make('tbody'),
-          direction = this.options.direction,
-          stop = this.options.stop;
+          direction = view.options.direction;
 
       _.each(this.collection.models[0].attributes, function(p) {
           if(p.minutes) {
@@ -148,58 +115,21 @@ var app = app || {};
         this.$el.append(tbody);
       }
 
-      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction, stop:view.options.stop});
+      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction});
       reloader.render();
 
       return this;
-    },
-    reloadPredictions: function(e) {
-      e.preventDefault();
-      $(e.srcElement).text('...');
-      this.model.fetch();
     }
   });
 
   app.AppView = Backbone.View.extend({
     el: '#routes',
-    events: {
-      'click a':'loadRoutes'
-    },
     render:function() {
       var view = this;
       $('#title').show();
       $('#type-selector').show();
 
-      var routeList = new app.Routes;
-      routeList.fetch();
-      routeList.on('reset', function() {
-        if(routeList === undefined || (routeList && routeList.length ===0))
-          alert('The route list is empty');
-        view.collection = routeList;
-      });
-
       return this;
-    },
-    loadRoutes: function(e) {
-      e.preventDefault();
-      var type = $(e.srcElement).attr('data-type'),
-          loadCollectionStreetCar = new app.Routes, loadCollectionBus = new app.Routes,
-          listView;
-
-      this.collection.each(function(r) {
-        if(r.get('tag').length > 2 && r.get('tag').slice(0,1) === '5') loadCollectionStreetCar.add(r);
-        else loadCollectionBus.add(r);
-
-        switch(type) {
-          case 's':
-            listView = new app.RoutesListView({collection:loadCollectionStreetCar});
-          break;
-          case 'b':
-            listView = new app.RoutesListView({collection:loadCollectionBus});
-          break
-        }
-      });
-      Controller.showView(listView);
     }
   });
 

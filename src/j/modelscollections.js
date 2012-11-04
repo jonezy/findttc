@@ -1,23 +1,6 @@
 var app = app || {};
 
 (function() {
-  app.RoutesNearModel = Backbone.Model.extend({});
-  app.RoutesNearCollection = Backbone.Collection.extend({
-    model:app.RoutesNearModel,
-    url: function() {
-      return 'http://www.myttc.ca/near/'+this.models[0].get('lat')+','+this.models[0].get('long')+'.json?callback=?';
-    },
-    parse: function(response) {
-      return response.locations;
-    }
-  });
-
-  app.RouteNearDetailModel = Backbone.Model.extend({
-    url: function() {
-      return 'http://www.myttc.ca/'+this.get('uri')+'.json?callback=?';
-    }
-  });
-
   app.Route = Backbone.Model.extend({});
   app.RouteDetail = Backbone.Model.extend({
     url: function() {
@@ -32,6 +15,23 @@ var app = app || {};
     url: 'http://webservices.nextbus.com/service/publicJSONFeed?command=routeList&a=ttc',
     parse: function(response) {
       return response.route;
+    },
+    streetCarRoutes: function() {
+      return this.filter(function(r) {
+        return (r.get('tag').length > 2 && r.get('tag').slice(0,1) === '5');
+      });
+    },
+    busRoutes: function() {
+      return this.filter(function(r) {
+        var tag = r.get('tag');
+        console.log(tag);
+        if(tag.length === 2) {
+          return r;
+        } else if (tag.length > 2) {
+          if(tag.slice(0,1) !== '5')
+            return r;
+        }
+      });
     }
   });
 
