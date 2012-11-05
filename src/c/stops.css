@@ -47,5 +47,5 @@ div.label {padding-bottom:5px;}
 @media only screen and (min-width: 321px) and (max-device-width:960px) {  
   body {margin-bottom:85px;}
   #routes {height:170px;overflow-y:auto;}
-div.label {margin-top:-1px;}
+div.label {margin-top:-1px;padding-bottom:5px;}
 }
