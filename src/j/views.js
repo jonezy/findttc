@@ -90,6 +90,8 @@ var app = app || {};
 
       _.each(this.collection.models[0].attributes, function(p) {
           if(p.minutes) {
+            var v = new app.Vehicle({'vehicle':p.vehicle})
+            p.vehicleType = v.getType();
             var minutesUntil = parseInt(p.minutes);
             if(!p.title) p.title = direction.title;
             if(minutesUntil > 10) {

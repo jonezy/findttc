@@ -41,6 +41,20 @@ var app = app || {};
   app.Stop = Backbone.Model.extend({});
   app.Stops = Backbone.Collection.extend({model:app.Stop});
 
+  app.Vehicle = Backbone.Model.extend({
+    getType:function() {
+      // this bit here is inspired by whereismystreetcar.appspot.com
+      // http://code.google.com/p/whereismystreetcar/source/browse/src/ca/wimsc/client/common/util/Vehicles.java
+      // thanks dude!
+      var v = this.get('vehicle').slice(0,2);
+      if(v === '40' || v === '41' || v === '42' || v === '45') {
+        return 'Street Car';
+      } else {
+        return 'Bus';
+      }
+    }
+  });
+
   app.Prediction = Backbone.Model.extend({
     url: function() {
       return 'http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=ttc&r='+ this.get('route')+'&s='+this.get('routeTag')+'';
