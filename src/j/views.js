@@ -74,6 +74,12 @@ var app = app || {};
     }
   });
 
+  app.PredictionMap = Backbone.View.extend({
+    render: function() {
+
+    }
+  });
+
   app.PredictionView = BaseListView.extend({
     tagName:'table',
     className: 'table',
@@ -92,7 +98,7 @@ var app = app || {};
       var myLatlng = new google.maps.LatLng(stop.lat,stop.lon);
       var mapOptions = {
         center: myLatlng,
-        zoom: 15,
+        zoom: 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
@@ -100,6 +106,36 @@ var app = app || {};
         position: myLatlng
       });
       marker.setMap(map);
+
+      var vehicleLocation = new app.VehicleLocation({route:this.collection.models[0].get('route'), stop:view.options.stop.tag});
+      vehicleLocation.fetch({
+        success: function(model,response) {
+          var vehicles = new app.Vehicles(model.get('vehicle'));
+          vehicles.each(function(v) {
+            var vehicle = new app.Vehicle({vehicle:v.get('id')});
+            var stop = _.find(view.collection.models[0].attributes, function(s) {
+              return s.vehicle === v.get('id');
+            });
+            if(stop) {
+              var marker = new google.maps.Marker ({
+                position: new google.maps.LatLng(v.get('lat'), v.get('lon')),
+                text: stop.minutes,
+                icon: '/img/'+vehicle.getType().replace(' ', '')+'.png'
+              })
+              console.log(stop);
+              var label = new Label({
+                map: map,
+                className: 'label ' + stop.label
+              });
+              label.bindTo('position', marker, 'position');
+              label.bindTo('text', marker, 'text');
+
+              marker.setMap(map);
+            }
+
+          })
+        }
+      });
 
       _.each(this.collection.models[0].attributes, function(p) {
           if(p.minutes) {

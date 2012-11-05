@@ -94,7 +94,6 @@ var app = app || {};
       predictions.on('change', function() {
         app.Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
 
-        console.log(stop);
         var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction,stop:stop});
         app.Controller.showView(predictionsView);
       });

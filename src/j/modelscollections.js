@@ -24,7 +24,6 @@ var app = app || {};
     busRoutes: function() {
       return this.filter(function(r) {
         var tag = r.get('tag');
-        console.log(tag);
         if(tag.length === 2) {
           return r;
         } else if (tag.length > 2) {
@@ -41,6 +40,15 @@ var app = app || {};
   app.Stop = Backbone.Model.extend({});
   app.Stops = Backbone.Collection.extend({model:app.Stop});
 
+  app.VehicleLocation = Backbone.Model.extend({
+  
+    url: function() {
+      return 'http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=ttc&r='+this.get('route')+'&s='+this.get('stop')+'&t=0';
+    }
+  });
+  app.VehicleLocations = Backbone.Collection.extend({
+    model:app.VehicleLocation
+  });
   app.Vehicle = Backbone.Model.extend({
     getType:function() {
       // this bit here is inspired by whereismystreetcar.appspot.com
@@ -53,6 +61,9 @@ var app = app || {};
         return 'Bus';
       }
     }
+  });
+  app.Vehicles= Backbone.Collection.extend({
+    model:app.Vehicle
   });
 
   app.Prediction = Backbone.Model.extend({
