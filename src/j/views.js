@@ -67,7 +67,7 @@ var app = app || {};
       var view = this;
       this.model.fetch({
         success: function(model, response) {
-          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction});
+          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction,stop:view.options.stop});
           Controller.showView(predictionsView);
         }
       });
@@ -86,7 +86,20 @@ var app = app || {};
       var view = this,
           count = 0
           tbody = this.make('tbody'),
-          direction = view.options.direction;
+          direction = view.options.direction,
+          stop = view.options.stop;
+
+      var myLatlng = new google.maps.LatLng(stop.lat,stop.lon);
+      var mapOptions = {
+        center: myLatlng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+      var marker = new google.maps.Marker({
+        position: myLatlng
+      });
+      marker.setMap(map);
 
       _.each(this.collection.models[0].attributes, function(p) {
           if(p.minutes) {
@@ -117,7 +130,7 @@ var app = app || {};
         this.$el.append(tbody);
       }
 
-      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction});
+      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction,stop:this.options.stop});
       reloader.render();
 
       return this;
