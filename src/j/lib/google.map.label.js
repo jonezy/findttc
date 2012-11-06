@@ -28,7 +28,7 @@ function Label(opt_options) {
 
    // west
    if(heading >=235 && heading < 315) {
-     span.style.cssText = 'position: relative; left: -32px; top: -24px; ';
+     span.style.cssText = 'position: relative; left: -30px; top: -24px; ';
    }
  } 
  var div = this.div_ = document.createElement('div');

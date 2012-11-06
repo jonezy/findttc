@@ -10,7 +10,7 @@ body {
 div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:-2px 5px 0px 0px;}
 td {font-size:90%;color:#777;}
 td small {font-size:90%;overflow:hidden;float:left;width:88%;}
-td small small {float:none;font-size:90%;color:#999;}
+td small small {float:none;font-size:80%;color:#999;}
 .table {margin-bottom:10px;}
 .table th, .table td {border-top:solid 1px #fff;line-height:normal;padding-top:10px;padding-bottom:10px;}
 .nav-tabs.nav-stacked > li > a {font-size:90%;}
