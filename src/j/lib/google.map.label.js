@@ -7,6 +7,30 @@ function Label(opt_options) {
  span.className = opt_options.className;
  span.style.cssText = 'position: relative; left: -50%; top: 0px; ';
 
+ if(opt_options.heading) {
+   var heading = parseInt(opt_options.heading),
+       headingOut;
+
+   // north
+   if(heading >= 315 && heading <= 15 ) {
+     span.style.cssText = 'position: relative; left: 0%; top: -20px; ';
+   }
+
+   // south
+   if(heading > 135 && heading < 235 ) {
+ span.style.cssText = 'position: relative; left: -50%; top: 0px; ';
+   }
+
+   // east
+   if(heading > 15 && heading <= 135) {
+     span.style.cssText = 'position: relative; left: 11px; top: -24px; ';
+   }
+
+   // west
+   if(heading >=235 && heading < 315) {
+     span.style.cssText = 'position: relative; left: -32px; top: -24px; ';
+   }
+ } 
  var div = this.div_ = document.createElement('div');
  div.appendChild(span);
  div.style.cssText = 'position: absolute; display: none';

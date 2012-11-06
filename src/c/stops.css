@@ -12,7 +12,7 @@ td {font-size:90%;color:#777;}
 td small {font-size:90%;overflow:hidden;float:left;width:88%;}
 td small small {float:none;font-size:90%;color:#999;}
 .table {margin-bottom:10px;}
-.table th, .table td {border-top:solid 1px #fff;line-height:normal;padding-top:12px;padding-bottom:12px;}
+.table th, .table td {border-top:solid 1px #fff;line-height:normal;padding-top:10px;padding-bottom:10px;}
 .nav-tabs.nav-stacked > li > a {font-size:90%;}
 #top-nav {float:left;}
 .navbar .btn-navbar.reload {display:inline;}
@@ -24,6 +24,7 @@ p {margin: 0 0 5px;}
   margin-right: -6px;
   opacity: .25;
 }
+#map_canvas {margin-top:16px;}
 @media (max-width: 979px) and (min-width: 768px) {
 .container {width:auto;}
 }
@@ -34,6 +35,7 @@ p {margin: 0 0 5px;}
     margin-right: -10px;
   }
   #map_canvas {height:200px !important;}
+  #routes.predictions {height:300px;overflow-y:auto;}
 }
 
 @media (max-width: 979px) {
@@ -45,8 +47,8 @@ p {margin: 0 0 5px;}
 @media only screen and (max-width : 320px) {
   body {margin-bottom:85px;}
   #routes {height:300px;overflow-y:auto;}
-  #routes.predictions {height:170px;margin-bottom:5px;}
-  #map_canvas {height:130px !important;}
+  #routes.predictions {height:140px;margin-bottom:5px;}
+  #map_canvas {height:160px !important;margin-top:0px;}
   div.label {padding-bottom:5px;}
 }
 /* Smartphones (landscape) ----------- */
