@@ -5,7 +5,7 @@ function Label(opt_options) {
  // Label specific
  var span = this.span_ = document.createElement('span');
  span.className = opt_options.className;
- span.style.cssText = 'position: relative; left: -50%; top: 0px; ';
+     span.style.cssText = 'position: relative; left: -14px; top: 5px; ';
 
  if(opt_options.heading) {
    var heading = parseInt(opt_options.heading),
@@ -18,17 +18,17 @@ function Label(opt_options) {
 
    // south
    if(heading > 135 && heading < 235 ) {
- span.style.cssText = 'position: relative; left: -50%; top: 0px; ';
+     span.style.cssText = 'position: relative; left: -14px; top: 5px; ';
    }
 
    // east
    if(heading > 15 && heading <= 135) {
-     span.style.cssText = 'position: relative; left: 11px; top: -24px; ';
+     span.style.cssText = 'position: relative; left: 10px; top: -24px; ';
    }
 
    // west
    if(heading >=235 && heading < 315) {
-     span.style.cssText = 'position: relative; left: -30px; top: -24px; ';
+     span.style.cssText = 'position: relative; left: -36px; top: -22px; ';
    }
  } 
  var div = this.div_ = document.createElement('div');

@@ -7,7 +7,8 @@ body {
 -webkit-transition: all .2s linear;};
 .navbar .brand:hover {color:#ddd;}
 .alert {margin-bottom:10px;}
-div.label {width:20px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:-2px 5px 0px 0px;}
+div.label,
+span.label {width:18px;float:left;text-align:center;padding:2px 3px 2px 4px;margin:-2px 5px 0px 0px;}
 td {font-size:90%;color:#777;}
 td small {font-size:90%;overflow:hidden;float:left;width:88%;}
 td small small {float:none;font-size:80%;color:#999;}
@@ -17,6 +18,7 @@ td small small {float:none;font-size:80%;color:#999;}
 #top-nav {float:left;}
 .navbar .btn-navbar.reload {display:inline;}
 h5,h4,h1 {margin-top :-8px}
+h5 {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 p {margin: 0 0 5px;}
 .icon-chevron-right {
   float: right;
@@ -34,8 +36,10 @@ p {margin: 0 0 5px;}
     margin-left: -10px;
     margin-right: -10px;
   }
-  #map_canvas {height:200px !important;}
-  #routes.predictions {height:300px;overflow-y:auto;}
+  /*#routes {height:170px !important;overflow-y:auto;}*/
+  /*.predictions {width:60% !important;float:left !important;}*/
+  /*#map {width:38%;float:right;}*/
+  /*#map_canvas {margin-top:0;height:170px !important;}*/
 }
 
 @media (max-width: 979px) {
@@ -47,14 +51,16 @@ p {margin: 0 0 5px;}
 @media only screen and (max-width : 320px) {
   body {margin-bottom:85px;}
   #routes {height:300px;overflow-y:auto;}
-  #routes.predictions {height:140px;margin-bottom:5px;}
-  #map_canvas {height:160px !important;margin-top:0px;}
+  #routes.predictions {height:150px;margin-bottom:5px;}
+  #map_canvas {height:170px !important;margin-top:0px;}
   div.label {padding-bottom:5px;}
 }
 /* Smartphones (landscape) ----------- */
-@media only screen and (min-width: 321px) and (max-device-width:960px) {  
+@media only screen and (min-width: 321px) and (max-device-width:480px) {  
   body {margin-bottom:85px;}
-  #routes {height:170px;overflow-y:auto;}
-  #map_canvas {display:none;}
-div.label {margin-top:-1px;padding-bottom:5px;}
+  #routes {height:170px !important;overflow-y:auto;}
+  .predictions {width:60% !important;float:left !important;}
+  #map {width:38%;float:right;}
+  #map_canvas {margin-top:0;height:170px !important;}
+  div.label {margin-top:-1px;padding-bottom:5px;}
 }
