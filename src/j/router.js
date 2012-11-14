@@ -50,6 +50,7 @@ var app = app || {};
 
     loadRouteStops: function(t,r,d) {
       var routeDetail = new app.RouteDetail({tag:r});
+      $('#map').hide();
 
       app.Controller.showLoadingText();
       app.type = t;
@@ -92,9 +93,10 @@ var app = app || {};
 
     actuallyLoadPredictions: function(predictions, direction, stop) {
       predictions.on('change', function() {
-        app.Controller.showTitle(stop.title + ' <small>(' + direction.branch + ' ' + direction.name + ')</small>');
+        //app.Controller.showTitle(stop.title + '<br /><small>(' + direction.branch + ' ' + direction.name + ')</small>');
+        app.Controller.showTitle(stop.title);
 
-        var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction});
+        var predictionsView = new app.PredictionView({collection:new app.Predictions(predictions),model:predictions,direction:direction,stop:stop});
         app.Controller.showView(predictionsView);
       });
 

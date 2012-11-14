@@ -19,19 +19,10 @@ var app = app || {};
 
   app.RoutesListView = BaseListView.extend({
     template: _.template($('#routeListTemplate').html()),
-    render: function() {
-      BaseListView.prototype.render.call(this);
-      return this;
-    }
   });
 
   app.DirectionsListView = BaseListView.extend({
     template: _.template($('#routeDirectionListTemplate').html()),
-    render: function() {
-      BaseListView.prototype.render.call(this);
-
-      return this;
-    }
   });
 
   app.StopsView = BaseListView.extend({
@@ -67,14 +58,20 @@ var app = app || {};
       var view = this;
       this.model.fetch({
         success: function(model, response) {
-          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction});
+          var predictionsView = new app.PredictionView({collection:new app.Predictions(model),model:model, direction:view.options.direction,stop:view.options.stop});
           Controller.showView(predictionsView);
         }
       });
     }
   });
 
-  app.PredictionView = BaseListView.extend({
+  app.PredictionMap = Backbone.View.extend({
+    render: function() {
+
+    }
+  });
+
+  app.PredictionView = Backbone.View.extend({
     tagName:'table',
     className: 'table',
     template: _.template($('#routePredictionListTemplate').html()),
@@ -86,14 +83,66 @@ var app = app || {};
       var view = this,
           count = 0
           tbody = this.make('tbody'),
-          direction = view.options.direction;
+          direction = view.options.direction,
+          stop = view.options.stop;
+
+      var myLatlng = new google.maps.LatLng(stop.lat,stop.lon);
+      var mapOptions = {
+        center: myLatlng,
+        zoom: 14,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        panControl: false,
+  zoomControl: true,
+  mapTypeControl: false,
+  scaleControl: true,
+  streetViewControl: false,
+  overviewMapControl:false
+      };
+      var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+      var marker = new google.maps.Marker({
+        position: myLatlng
+      });
+      marker.setMap(map);
+      $('#map').show();
+
+      var vehicleLocation = new app.VehicleLocation({route:this.collection.models[0].get('route'), stop:view.options.stop.tag});
+      vehicleLocation.fetch({
+        success: function(model,response) {
+          var vehicles = new app.Vehicles(model.get('vehicle'));
+          vehicles.each(function(v) {
+            //console.log(v)
+            var vehicle = new app.Vehicle({vehicle:v.get('id')});
+            var stop = _.find(view.collection.models[0].attributes, function(s) {
+              return s.vehicle === v.get('id');
+            });
+            if(stop) {
+              var marker = new google.maps.Marker ({
+                position: new google.maps.LatLng(v.get('lat'), v.get('lon')),
+                text: stop.minutes,
+                icon: '/img/'+vehicle.getType().replace(' ', '')+'.png'
+              })
+              console.log(v.get('heading'));
+              var label = new Label({
+                map: map,
+                className: 'label ' + stop.label,
+                heading:v.get('heading')
+              });
+              label.bindTo('position', marker, 'position');
+              label.bindTo('text', marker, 'text');
+
+              marker.setMap(map);
+            }
+
+          })
+        }
+      });
 
       _.each(this.collection.models[0].attributes, function(p) {
           if(p.minutes) {
             var v = new app.Vehicle({'vehicle':p.vehicle})
             p.vehicleType = v.getType();
             var minutesUntil = parseInt(p.minutes);
-            if(!p.title) p.title = direction.title;
+            if(!p.title) p.title = direction.branch + ' ' + direction.name;
             if(minutesUntil > 10) {
               p.label = 'label-success';
               p.rowlabel = 'success';
@@ -112,12 +161,14 @@ var app = app || {};
       });
 
       if(count === 0) {
+        $('#routes').height(50);
         app.Helpers.makeAlert({message:'There are no predictions for this stop', className:'alert-info'});
+
       } else {
         this.$el.append(tbody);
       }
 
-      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction});
+      var reloader = new app.PredictionReloader({model:this.model, predictions:this.options.predictions, direction:this.options.direction,stop:this.options.stop});
       reloader.render();
 
       return this;
