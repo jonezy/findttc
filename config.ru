@@ -1,5 +1,8 @@
-require ::File.expand_path('../config/environment',  __FILE__)
 use Rack::Deflater
+require "rubygems"
+require "bundler"
+Bundler.require(:default)
+map "/" do 
 use Rack::Static,
   :urls => ["/img", "/j", "/c"],
   :root => "public"
@@ -14,3 +17,4 @@ run lambda { |env|
     File.open('public/index.html', File::RDONLY)
   ]
 }
+end
