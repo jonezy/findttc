@@ -1,7 +1,8 @@
-use Rack::Deflater
+require ::File.expand_path('../config/environment',  __FILE__)
 require "rubygems"
 require "bundler"
 Bundler.require(:default)
+use Rack::Deflater
 map "/" do 
 use Rack::Static,
   :urls => ["/img", "/j", "/c"],
